@@ -41,7 +41,7 @@ namespace RazorRockstars.SelfHost
         {
             return new RockstarsResponse {
                 Aged = request.Age,
-                Total = Db.Scalar<int>("select count(*) from Rockstar"),
+                Total = Db.Scalar<int>("select count(*) from \"Rockstar\""),
                 Results = request.Id != default(int)
                     ? Db.Select<Rockstar>(q => q.Id == request.Id)
                     : request.Age.HasValue

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Funq;
+using ServiceStack.Configuration;
 using ServiceStack.DataAnnotations;
 using ServiceStack.Logging;
 using ServiceStack.Logging.Support.Logging;
@@ -34,8 +35,11 @@ namespace RazorRockstars.SelfHost
 
             Plugins.Add(new RazorFormat());
 
-            container.Register<IDbConnectionFactory>(
-                new OrmLiteConnectionFactory(":memory:", false, SqliteDialect.Provider));
+            var connectionString = ConfigUtils.GetConnectionString("postgresql");
+            container.Register<IDbConnectionFactory>(new OrmLiteConnectionFactory(connectionString, false,
+                                                                                PostgreSqlDialect.Provider));
+           //container.Register<IDbConnectionFactory>(
+            //    new OrmLiteConnectionFactory(":memory:", false, SqliteDialect.Provider));
 
             using (var db = container.Resolve<IDbConnectionFactory>().OpenDbConnection())
             {
